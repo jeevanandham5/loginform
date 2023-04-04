@@ -1,91 +1,140 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
+"use client";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import Image from "next/image";
+import React from "react";
 
-const inter = Inter({ subsets: ['latin'] })
+import styles from "./page.module.css";
+import { useForm } from "react-hook-form";
 
 export default function Home() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm("");
+
+  const onSubmit = (data) => {
+    console.log(data);
+    alert("Your form is valid" )
+  };
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+      <>
+        <Typography variant="h2" mb={"100px"} sx={{ fontFamily: "Alkatra" }}>
+          Form Validation Using React-hooks-useform
+        </Typography>
+        <Typography
+          variant="h4"
+          textAlign={"center"}
+          justifyContent={"center"}
+          sx={{ fontFamily: "Alkatra", color: "#a10808" }}
         >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+          Lets Get started
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box>
+              <Image src={"/form.png"} alt="img" width={250} height={400} priority />
+            </Box>
+            <Box
+              className={styles.formbox}
+              sx={{
+                borderRadius: "20px",
+                border: "2px solid black",
+                padding: "50px",
+                width: "500px",
+                height: "500px",
+                marginLeft: "-3px",
+                alignItems: "cenetr",
+              }}
+            >
+              <Box sx={{ display: "flex", margin: "15px" }}>
+                <Typography
+                  variant="h5"
+                  sx={{ m: "15px", fontFamily: "Alkatra" }}
+                >
+                  FirstName
+                </Typography>
+                <TextField
+                  id="FirstName"
+                  label="FirstName"
+                  type="text"
+                  helperText={errors?.firstName ? "check the firstname" : null}
+                  variant="outlined"
+                  {...register("firstName", { required: true, maxLength: 10 })}
+                  error={!!errors?.firstName}
+                />
+              </Box>
+              <Box sx={{ display: "flex", margin: "15px" }}>
+                <Typography
+                  variant="h5"
+                  sx={{ m: "15px", fontFamily: "Alkatra" }}
+                >
+                  LastName
+                </Typography>
+                <TextField
+                  id="LastName"
+                  label="LastName"
+                  type="text"
+                  helperText={errors?.lastName ? "check the lastName" : null}
+                  variant="outlined"
+                  {...register("lastName", { required: true, maxLength: 10 })}
+                  error={!!errors?.lastName}
+                />
+              </Box>
+              <Box sx={{ display: "flex", margin: "15px" }}>
+                <Typography
+                  variant="h5"
+                  sx={{ m: "15px", marginRight: "58px", fontFamily: "Alkatra" }}
+                >
+                  Email
+                </Typography>
+                <TextField
+                  id="outlined-basic"
+                  label="Email"
+                  name="Email"
+                  type="email"
+                  variant="outlined"
+                  helperText={errors?.email ? "invalid email address" : null}
+                  {...register("email", {
+                    required: true,
+                    //use email pattern here
+                    pattern: "[A-Za-z]+@.com",
+                  })}
+                  error={!!errors?.email}
+                />
+              </Box>
+              <Box sx={{ display: "flex", margin: "15px" }}>
+                <Typography
+                  variant="h5"
+                  sx={{ m: "15px", marginRight: "20px", fontFamily: "Alkatra" }}
+                >
+                  Password
+                </Typography>
+                <TextField
+                  id="Password-basic"
+                  label="Password"
+                  name="Password"
+                  type="Password"
+                  variant="outlined"
+                  helperText={
+                    errors?.password ? "password must contain 8 to 16 " : null
+                  }
+                  {...register("password", {
+                    required: true,
+                    maxLength: 16,
+                    minLength: 8,
+                  })}
+                  error={!!errors?.password}
+                />
+              </Box>
+              <Button variant="contained" type="submit" fullWidth>
+                Submit
+              </Button>
+            </Box>
+          </Box>
+        </form>
+      </>
     </main>
-  )
+  );
 }
